@@ -1,8 +1,0 @@
-f = open("love.txt", 'w')
-sentence = input("请输入一段语句：")
-f.write(sentence)
-f.close()
-f = open("love.txt", 'r')
-a = f.read()
-print(a)
-f.close()
