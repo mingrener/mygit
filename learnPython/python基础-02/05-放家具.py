@@ -1,4 +1,4 @@
-class home():
+class home:
     def __init__(self, new_area, new_type, new_addr):
         self.area = new_area
         self.type = new_type
