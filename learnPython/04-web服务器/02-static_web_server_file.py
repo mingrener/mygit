@@ -38,7 +38,7 @@ def clTool(cl_socket,cl_addr):
     response = start_line_response + headers_response + "\r\n" + body_response
     print("response data:\r\n",response)
     cl_socket.send(response.encode("utf-8"))
-
+    cl_socket.close()
 
 # 创建服务器端socket
 sv_socket = socket(AF_INET,SOCK_STREAM)
@@ -51,7 +51,7 @@ while True:
     #print("----2----")
     # 获取已连接的客户端信息
     cl_socket, cl_addr = sv_socket.accept()
-    print("客户端地址：",str(cl_addr))
+    print("客户端：",str(cl_addr),"已连接上")
     cl_process = Process(target=clTool, args=(cl_socket,cl_addr))
     cl_process.start()
     cl_process.join()
