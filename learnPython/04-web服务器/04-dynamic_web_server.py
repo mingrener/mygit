@@ -19,12 +19,12 @@ class HTTPServer():
         while True:
             # print("----2----")
             # 获取已连接的客户端信息
-            cl_socket, cl_addr = self.sv_socket.accept()
+            client_socket, cl_addr = self.sv_socket.accept()
             print("客户端：", str(cl_addr), "已连接上")
-            cl_process = Process(target=self.cl_tool, args=(cl_socket,))
+            cl_process = Process(target=self.client_tool, args=(client_socket,))
             cl_process.start()
             cl_process.join()
-            cl_socket.close()
+            client_socket.close()
 
     def start_response(self, status, headers):
         self.start_line_response = "HTTP/1.1 " + status + "\r\n"
@@ -33,10 +33,10 @@ class HTTPServer():
             self.headers_response += "%s:%s\r\n"%header
 
 
-    def cl_tool(self,cl_socket):
+    def client_tool(self,client_socket):
         """处理客户端的请求"""
         # 接受并打印客户端发送的报文信息
-        request_data = cl_socket.recv(1024)
+        request_data = client_socket.recv(1024)
         request_data = request_data.decode("utf-8")
         print("request data:\r\n", request_data)
         # 解析报文数据
@@ -85,8 +85,8 @@ class HTTPServer():
             response = start_line_response + headers_response + "\r\n" + body_response
         print("response data:\r\n", response)
         # 返回响应数据
-        cl_socket.send(bytes(response,"utf-8"))
-        cl_socket.close()
+        client_socket.send(bytes(response,"utf-8"))
+        client_socket.close()
 
     def bind(self, port):
         sv_addr = ("", port)
